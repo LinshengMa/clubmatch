@@ -5,6 +5,7 @@ import ChatBot from './components/ChatBot'
 import StudentView from './views/student/StudentView'
 import ClubAdminView from './views/clubAdmin/ClubAdminView'
 import SuperAdminView from './views/superAdmin/SuperAdminView'
+import MyClubs from './views/student/MyClubs'
 import { applications as initialApplications } from './data/mockData'
 
 function App() {
@@ -56,6 +57,9 @@ function App() {
               applications={applications}
               onUpdateApplication={updateApplication}
             />
+          )}
+          {role === 'myClubs' && (
+            <MyClubs applications={applications} onBack={() => setRole('student')} />
           )}
           {isSuperAdmin && <SuperAdminView />}
 

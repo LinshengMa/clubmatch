@@ -1,6 +1,7 @@
 const roles = [
   { key: 'student', label: '新生' },
   { key: 'clubAdmin', label: '社团管理员' },
+  { key: 'myClubs', label: '我的社团' },
 ]
 
 export default function RoleSwitcher({ currentRole, onSwitch }) {
