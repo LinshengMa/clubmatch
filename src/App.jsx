@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import RoleSwitcher from './components/RoleSwitcher'
+import { ToastProvider } from './components/Toast'
 import StudentView from './views/student/StudentView'
 import ClubAdminView from './views/clubAdmin/ClubAdminView'
 import SuperAdminView from './views/superAdmin/SuperAdminView'
+import { applications as initialApplications } from './data/mockData'
 
 function App() {
   const [role, setRole] = useState('student')
+  const [applications, setApplications] = useState(initialApplications)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -16,6 +19,16 @@ function App() {
 
   const isSuperAdmin = role === 'superadmin'
 
+  const addApplication = (app) => {
+    setApplications((prev) => [...prev, app])
+  }
+
+  const updateApplication = (id, updates) => {
+    setApplications((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-300 flex items-start justify-center">
       <div
@@ -25,13 +38,20 @@ function App() {
           minHeight: '100dvh',
         }}
       >
-        {!isSuperAdmin && (
-          <RoleSwitcher currentRole={role} onSwitch={setRole} />
-        )}
+        <ToastProvider>
+          {!isSuperAdmin && (
+            <RoleSwitcher currentRole={role} onSwitch={setRole} />
+          )}
 
-        {role === 'student' && <StudentView />}
-        {role === 'clubAdmin' && <ClubAdminView />}
-        {isSuperAdmin && <SuperAdminView />}
+          {role === 'student' && (
+            <StudentView
+              applications={applications}
+              onAddApplication={addApplication}
+            />
+          )}
+          {role === 'clubAdmin' && <ClubAdminView />}
+          {isSuperAdmin && <SuperAdminView />}
+        </ToastProvider>
       </div>
     </div>
   )
