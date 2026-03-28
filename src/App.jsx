@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import RoleSwitcher from './components/RoleSwitcher'
 import { ToastProvider } from './components/Toast'
+import ChatBot from './components/ChatBot'
 import StudentView from './views/student/StudentView'
 import ClubAdminView from './views/clubAdmin/ClubAdminView'
 import SuperAdminView from './views/superAdmin/SuperAdminView'
@@ -47,10 +48,13 @@ function App() {
             <StudentView
               applications={applications}
               onAddApplication={addApplication}
+              onUpdateApplication={updateApplication}
             />
           )}
           {role === 'clubAdmin' && <ClubAdminView />}
           {isSuperAdmin && <SuperAdminView />}
+
+          {role === 'student' && <ChatBot />}
         </ToastProvider>
       </div>
     </div>

@@ -2,16 +2,17 @@ import { useState } from 'react'
 import OnboardingQuiz from './OnboardingQuiz'
 import SwipeCards from './SwipeCards'
 import ClubDetail from './ClubDetail'
+import MyApplications from './MyApplications'
 import ApplicationDrawer from '../../components/ApplicationDrawer'
 import { matchClubs } from '../../services/aiService'
 import { clubs } from '../../data/mockData'
 
-export default function StudentView({ applications, onAddApplication }) {
+export default function StudentView({ applications, onAddApplication, onUpdateApplication }) {
   const [profile, setProfile] = useState(null)
   const [matchResults, setMatchResults] = useState(null)
   const [view, setView] = useState('quiz') // quiz | swipe | swipeAll | detail | applications
   const [detailClub, setDetailClub] = useState(null)
-  const [applyClub, setApplyClub] = useState(null) // for detail page apply drawer
+  const [applyClub, setApplyClub] = useState(null)
   const [prevView, setPrevView] = useState('swipe')
 
   const handleQuizComplete = async (answers) => {
@@ -85,21 +86,13 @@ export default function StudentView({ applications, onAddApplication }) {
     )
   }
 
-  // applications view — placeholder for Phase 6
   if (view === 'applications') {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 gap-3">
-        <p className="text-xl font-bold text-gray-800">我的申请</p>
-        <p className="text-sm text-gray-400">
-          已提交 {applications.filter((a) => a.studentId === 'stu_current').length} 份申请
-        </p>
-        <button
-          onClick={() => setView('swipe')}
-          className="text-indigo-500 text-sm hover:underline mt-2"
-        >
-          ← 返回推荐
-        </button>
-      </div>
+      <MyApplications
+        applications={applications}
+        onUpdateApplication={onUpdateApplication}
+        onBack={() => setView('swipe')}
+      />
     )
   }
 
