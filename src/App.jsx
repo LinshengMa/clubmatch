@@ -51,7 +51,12 @@ function App() {
               onUpdateApplication={updateApplication}
             />
           )}
-          {role === 'clubAdmin' && <ClubAdminView />}
+          {role === 'clubAdmin' && (
+            <ClubAdminView
+              applications={applications}
+              onUpdateApplication={updateApplication}
+            />
+          )}
           {isSuperAdmin && <SuperAdminView />}
 
           {role === 'student' && <ChatBot />}

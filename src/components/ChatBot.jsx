@@ -23,6 +23,26 @@ export default function ChatBot() {
   const [dragging, setDragging] = useState(false)
   const dragStart = useRef({ x: 0, y: 0 })
   const dragMoved = useRef(false)
+  const fabRef = useRef(null)
+
+  const clampToContainer = (x, y) => {
+    const container = fabRef.current?.closest('[style*="maxWidth"]')
+    if (!container) return { x, y }
+    const cr = container.getBoundingClientRect()
+    const fabSize = 48 // w-12 = 48px
+    // Default position is bottom-5(20px) right-4(16px), offset is relative to that
+    const defaultRight = 16
+    const defaultBottom = 20
+    // Calculate bounds for the offset
+    const minX = -(cr.width - defaultRight - fabSize)
+    const maxX = defaultRight
+    const minY = -(cr.height - defaultBottom - fabSize)
+    const maxY = defaultBottom
+    return {
+      x: Math.max(minX, Math.min(maxX, x)),
+      y: Math.max(minY, Math.min(maxY, y)),
+    }
+  }
 
   const handleFabPointerDown = (e) => {
     setDragging(true)
@@ -37,7 +57,7 @@ export default function ChatBot() {
     if (Math.abs(dx - fabPos.x) > 3 || Math.abs(dy - fabPos.y) > 3) {
       dragMoved.current = true
     }
-    setFabPos({ x: dx, y: dy })
+    setFabPos(clampToContainer(dx, dy))
   }
   const handleFabPointerUp = () => {
     setDragging(false)
@@ -68,6 +88,7 @@ export default function ChatBot() {
   if (!open) {
     return (
       <div
+        ref={fabRef}
         onPointerDown={handleFabPointerDown}
         onPointerMove={handleFabPointerMove}
         onPointerUp={handleFabPointerUp}

@@ -105,18 +105,26 @@ export default function SwipeCards({
 
       {/* Bottom buttons */}
       {!drawerClub && (
-        <div className="flex gap-8 justify-center pb-6">
+        <div className="flex flex-col items-center gap-3 pb-6">
+          <div className="flex gap-8 justify-center">
+            <button
+              onClick={() => triggerRef.current?.('left')}
+              className="w-14 h-14 rounded-full bg-white shadow-md border border-gray-200 text-2xl hover:scale-110 transition-transform flex items-center justify-center"
+            >
+              ✖
+            </button>
+            <button
+              onClick={() => triggerRef.current?.('right')}
+              className="w-14 h-14 rounded-full bg-indigo-500 shadow-md text-2xl hover:scale-110 transition-transform flex items-center justify-center text-white"
+            >
+              ❤️
+            </button>
+          </div>
           <button
-            onClick={() => triggerRef.current?.('left')}
-            className="w-14 h-14 rounded-full bg-white shadow-md border border-gray-200 text-2xl hover:scale-110 transition-transform flex items-center justify-center"
+            onClick={onViewApplications}
+            className="text-indigo-500 text-xs hover:underline"
           >
-            ✖
-          </button>
-          <button
-            onClick={() => triggerRef.current?.('right')}
-            className="w-14 h-14 rounded-full bg-indigo-500 shadow-md text-2xl hover:scale-110 transition-transform flex items-center justify-center text-white"
-          >
-            ❤️
+            📋 查看我的申请
           </button>
         </div>
       )}
